@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import produitRoutes from "./routes/produitRoutes.js";
+import cors from "cors";
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -13,6 +14,9 @@ const port = process.env.PORT || 3005;
 
 // Middleware pour parser les requêtes JSON
 app.use(bodyParser.json());
+
+// Autoriser les requêtes CORS
+app.use(cors());
 
 // Connexion à MongoDB
 mongoose

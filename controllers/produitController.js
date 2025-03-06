@@ -85,3 +85,49 @@ export const getFichierPDF = async (req, res) => {
       .send({ error: "Erreur lors de la récupération du fichier PDF." });
   }
 };
+
+export const getCategories = async (req, res) => {
+  try {
+    // Trouver toutes les catégories dans la base de données
+    const categories = await Categorie.find();
+
+    // Si aucune catégorie n'est trouvée, on renvoie un message d'erreur
+    if (!categories.length) {
+      return res.status(404).send({ error: "Aucune catégorie trouvée." });
+    }
+
+    // Renvoie les catégories au format JSON
+    res.status(200).send(categories);
+  } catch (err) {
+    console.error("Erreur lors de la récupération des catégories :", err);
+    res
+      .status(500)
+      .send({ error: "Erreur lors de la récupération des catégories." });
+  }
+};
+
+// Récupérer les produits par catégorie
+export const getProduitsByCategorie = async (req, res) => {
+  try {
+    const { nomCategorie } = req.params;
+
+    // Vérifier si la catégorie existe
+    const categorie = await Categorie.findOne({ nom: nomCategorie });
+    if (!categorie) {
+      return res.status(404).json({ error: "Catégorie non trouvée" });
+    }
+
+    // Trouver tous les produits appartenant à cette catégorie en excluant "_id"
+    const produits = await Produit.find({ categories: categorie._id })
+      .populate("categories")
+      .select("-_id -fichierPDF"); // Exclut "_id" et "fichierPDF" de la réponse
+
+    res.status(200).json(produits);
+  } catch (err) {
+    console.error(
+      "Erreur lors de la récupération des produits par catégorie :",
+      err
+    );
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+};

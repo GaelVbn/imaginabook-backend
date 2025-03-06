@@ -3,6 +3,8 @@ import {
   createProduit,
   getProduits,
   getFichierPDF,
+  getCategories,
+  getProduitsByCategorie,
 } from "../controllers/produitController.js";
 
 import { verifyToken } from "../middlewares/verifyToken.js";
@@ -17,5 +19,10 @@ router.get("/produits", getProduits);
 
 // Route pour récupérer le fichier PDF d'un produit
 router.get("/produits/fichierPDF", verifyToken, getFichierPDF);
+
+router.get("/categories", getCategories);
+
+// Route pour récupérer les produits d'une catégorie spécifique
+router.get("/produits/categorie/:nomCategorie", getProduitsByCategorie);
 
 export default router;

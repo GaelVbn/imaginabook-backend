@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import produitRoutes from "./routes/produitRoutes.js";
+import contactRoutes from "./controllers/contactController.js";
 import cors from "cors";
 
 // Charger les variables d'environnement
@@ -30,6 +31,8 @@ mongoose
 
 // Utiliser les routes des produits
 app.use("/api", produitRoutes);
+
+app.use("/api/contact", contactRoutes);
 
 // Route pour tester la connexion
 app.get("/", (req, res) => {

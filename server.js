@@ -18,13 +18,7 @@ const port = process.env.PORT || 3005;
 app.use(bodyParser.json());
 
 // Autoriser les requêtes CORS
-const corsOptions = {
-  origin: ["http://localhost:3000", "https://imaginabook.vercel.app"],
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Connexion à MongoDB
 mongoose

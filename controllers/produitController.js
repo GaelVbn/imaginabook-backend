@@ -62,6 +62,19 @@ export const getProduits = async (req, res) => {
   }
 };
 
+// Obtenir uniquement le produit par son token
+export const getProduitByToken = async (req, res) => {
+  try {
+    const produit = await Produit.findOne(
+      { token: req.headers.authorization.split(" ")[1] },
+      { _id: 0, fichierPDF: 0 }
+    ).populate("categories");
+    res.status(200).send(produit);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
 // Récupérer le fichier PDF d'un produit par titre
 export const getFichierPDF = async (req, res) => {
   try {
@@ -113,6 +126,7 @@ export const getProduitsByCategorie = async (req, res) => {
 
     // Vérifier si la catégorie existe
     const categorie = await Categorie.findOne({ nom: nomCategorie });
+
     if (!categorie) {
       return res.status(404).json({ error: "Catégorie non trouvée" });
     }

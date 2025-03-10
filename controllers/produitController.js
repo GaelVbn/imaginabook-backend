@@ -44,7 +44,7 @@ export const createProduit = [
       produit.token = token;
 
       await produit.save(); // Sauvegarder le produit avec les informations
-      res.status(201).send(produit); // Répondre avec le produit créé
+      res.status(201).send("Produit créé avec succès."); // Répondre avec le produit créé
     } catch (err) {
       console.error("Erreur générale :", err);
       res.status(400).send({ error: "Erreur lors de la création du produit." });

@@ -165,7 +165,7 @@ export const sendConfirmationEmail = async (req, res) => {
         <p>Numéro de transaction : <strong>${sessionId}</strong></p>
         <p>Nous vous remercions pour votre confiance.</p>
         <p>Nous vous invitons à donner votre avis sur votre achat en cliquant sur le lien ci-dessous :</p>
-        <p><a href="http://localhost:3000/reviewFormPage?tokenReview=${reviewToken}">Donner mon avis</a></p>
+        <p><a href="https://www.imaginabook.com/reviewFormPage?tokenReview=${reviewToken}">Donner mon avis</a></p>
         <p>Le lien expirera dans 24 heures.</p>
       `,
       attachments: [], // Initialisation d'un tableau vide pour les pièces jointes

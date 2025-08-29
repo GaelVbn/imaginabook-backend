@@ -16,18 +16,49 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("Connexion à MongoDB réussie"))
-  .catch((err) => console.error("Erreur de connexion à MongoDB", err));
+// ---------------------------
+// Connexion MongoDB persistante
+// ---------------------------
+let cached = global.mongoose;
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function connectToDatabase() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    cached.promise = mongoose
+      .connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      })
+      .then((mongoose) => mongoose);
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+// ---------------------------
+// Routes
+// ---------------------------
+app.get("/", async (req, res) => {
+  try {
+    await connectToDatabase();
+    res.send("<h1>Bienvenue sur l'API Imaginabook 🚀</h1>");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur de connexion à MongoDB");
+  }
+});
 
 app.use("/api", produitRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/review", reviewRoutes);
 
-app.get("/", (req, res) => {
-  res.send("<h1>Bienvenue sur l'API Imaginabook 🚀</h1>");
-});
-
+// ---------------------------
+// Export serverless
+// ---------------------------
 export default serverless(app);

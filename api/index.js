@@ -2,16 +2,16 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import produitRoutes from "./routes/produitRoutes.js";
-import contactRoutes from "./controllers/contactController.js";
-import emailRoutes from "./routes/emailRoutes.js";
-import reviewRoutes from "./routes/reviewRoutes.js";
+import produitRoutes from "../routes/produitRoutes.js";
+import contactRoutes from "../controllers/contactController.js";
+import emailRoutes from "../routes/emailRoutes.js";
+import reviewRoutes from "../routes/reviewRoutes.js";
 import cors from "cors";
+import serverless from "serverless-http";
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3005;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -27,9 +27,7 @@ app.use("/api/email", emailRoutes);
 app.use("/api/review", reviewRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Serveur Node.js en cours d'exécution en local 🚀");
+  res.send("API Node.js déployée sur Vercel 🚀");
 });
 
-app.listen(port, () => {
-  console.log(`Serveur en écoute sur le port ${port}`);
-});
+export default serverless(app);

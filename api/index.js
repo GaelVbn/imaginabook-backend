@@ -27,7 +27,7 @@ app.use("/api/email", emailRoutes);
 app.use("/api/review", reviewRoutes);
 
 app.get("/", (req, res) => {
-  res.send("API Node.js déployée sur Vercel 🚀");
+  res.send("<h1>Bienvenue sur l'API Imaginabook 🚀</h1>");
 });
 
 export default serverless(app);
